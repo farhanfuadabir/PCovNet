@@ -1,4 +1,8 @@
+__pycache__/
 .idea/*
 .DS_Store/*
-data/raw/*
-!data/raw/.gitkeep
+tf_env/*
+data/*
+# data/raw/*
+# !data/raw/.gitkeep
+
