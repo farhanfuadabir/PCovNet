@@ -6,10 +6,12 @@ from sklearn.preprocessing import StandardScaler
 from preprocess.augmentation import augment_dataset
 from config.config import subject_info
 
+
 class Subject():
     def __init__(self, config, index):
+        self.config = config
         self.index = index
-        self.exp_phase = config['EXP_PHASE']
+        self.exp_phase = self.config['EXP_PHASE']
         self.id = subject_info['ID'][index]
         self.symptom_onset = pd.to_datetime(
             subject_info['Symptom Onset'][index])
@@ -26,9 +28,10 @@ class Subject():
         elif self.exp_phase == 'phase2':
             self.device = subject_info['Device'][index]
 
-        self.hr_path = os.path.join(config['DATA_DIR'], self.id + '_hr.csv')
-        self.steps_path = os.path.join(
-            config['DATA_DIR'], self.id + '_steps.csv')
+        self.hr_path = os.path.join(self.config['DATA_DIR'],
+                                    self.id + '_hr.csv')
+        self.steps_path = os.path.join(self.config['DATA_DIR'],
+                                       self.id + '_steps.csv')
 
         self.__get_hr()
         self.__get_steps()
@@ -43,30 +46,31 @@ class Subject():
         self.delta_rhr = self.rhr['RHR'] - self.baseline_rhr
 
         self.__standardize_data()
-        self.train_dataset_vae = self.__create_vae_dataset(self.train_data, 
-                                                           config['LEN_WIN'])
+        self.train_dataset_vae = self.__create_vae_dataset(self.train_data,
+                                                           self.config['LEN_WIN'])
         self.test_dataset_vae = self.__create_vae_dataset(self.test_data,
-                                                          config['LEN_WIN'])
+                                                          self.config['LEN_WIN'])
         self.merged_dataset_vae = self.__create_vae_dataset(self.merged_data,
-                                                            config['LEN_WIN'])
+                                                            self.config['LEN_WIN'])
 
         self.train_dataset_lstm = self.__create_lstm_dataset(self.train_data,
-                                                             config['LEN_WIN'],
-                                                             config['N_WIN'])
+                                                             self.config['LEN_WIN'],
+                                                             self.config['N_WIN'])
         self.test_dataset_lstm = self.__create_lstm_dataset(self.test_data,
-                                                            config['LEN_WIN'],
-                                                            config['N_WIN'])
+                                                            self.config['LEN_WIN'],
+                                                            self.config['N_WIN'])
         self.merged_dataset_lstm = self.__create_lstm_dataset(self.merged_data,
-                                                              config['LEN_WIN'],
-                                                              config['N_WIN'])
+                                                              self.config['LEN_WIN'],
+                                                              self.config['N_WIN'])
 
-        if config['AUGMENT']:
-            self.train_aug_dataset_vae = augment_dataset(self.train_dataset_vae)
+        if self.config['AUGMENT']:
+            self.train_aug_dataset_vae = augment_dataset(
+                self.train_dataset_vae)
             # self.train_aug_dataset_lstm = augment_dataset(self.train_dataset_lstm)
 
-        self.n_vae_train = len(self.train_data) - config['LEN_WIN'] + 1
-        self.n_vae_test = len(self.train_data) - config['LEN_WIN'] + 1
-        self.n_vae_merged = len(self.train_data) - config['LEN_WIN'] + 1
+        self.n_vae_train = len(self.train_data) - self.config['LEN_WIN'] + 1
+        self.n_vae_test = len(self.train_data) - self.config['LEN_WIN'] + 1
+        self.n_vae_merged = len(self.train_data) - self.config['LEN_WIN'] + 1
 
     def __get_hr(self):
         if self.exp_phase == 'phase1':
@@ -174,3 +178,24 @@ class Subject():
             dataset.append(data[i: i+(len_win * n_win)])
         dataset = np.array(dataset)
         return dataset.reshape(dataset.shape[0], n_win, len_win, 1)
+
+    def print_info(self):
+        print(f"\
+            Subject Info\n\
+            ============\n\
+            Index:                {self.index}\n\
+            Phase:                {self.exp_phase}\n\
+            Group:                {self.config['EXP_GROUP']}\n\
+            ID:                   {self.id}\n\
+            Device:               {self.device}\n\
+            \n\
+            Dataset Shape\n\
+            =============\n\
+            VAE Train:            {self.train_dataset_vae.shape}\n\
+            VAE Train-aug:        {self.train_aug_dataset_vae.shape}\n\
+            VAE Test:             {self.test_dataset_vae.shape}\n\
+            VAE Merged:           {self.merged_dataset_vae.shape}\n\
+            LSTM Train:           {self.train_dataset_lstm.shape}\n\
+            LSTM Train:           {self.test_dataset_lstm.shape}\n\
+            LSTM Merged:          {self.merged_dataset_lstm.shape}\n\
+        ")
