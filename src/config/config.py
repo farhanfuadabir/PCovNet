@@ -1,0 +1,15 @@
+config = {
+    'EXP_NAME': "random",
+    'EXP_PHASE': "phase2",
+    'EXP_GROUP': "covid",
+    'EXP_TYPE': "individual",
+    'AUGMENT': True,
+    'LEN_WIN': 24,
+    'N_WIN': 4,
+    'LATENT_DIM': 6,
+    'BATCH_SIZE': 32,
+    'VAL_SPLIT': 0.05,
+    'LEARNING_RATE': 0.0001,
+    'EPOCH': 10,
+    'PATIENCE': 5,
+}
