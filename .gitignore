@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store/*
 tf_env/*
 data/*
+experiment/*
 # data/raw/*
 # !data/raw/.gitkeep
 
