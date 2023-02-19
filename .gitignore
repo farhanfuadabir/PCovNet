@@ -2,8 +2,8 @@ __pycache__/
 .idea/*
 .DS_Store/*
 tf_env/*
-data/*
+data/raw/phase1/*
+data/raw/phase2/*
+!data/raw/phase1/readme.txt
+!data/raw/phase2/readme.txt
 experiment/*
-# data/raw/*
-# !data/raw/.gitkeep
-
