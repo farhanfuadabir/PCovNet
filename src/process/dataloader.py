@@ -49,10 +49,12 @@ class Data():
         if len(self.rhr) == 0:
             self.error = True
             self.error_message += "No RHR data found after merging!\n"
+            self.error_message += "No RHR data found after merging!\n"
             return -1
 
         # Check RHR wrt baseline data availability
         if self.rhr.index[0] > self.date_dict['before_20']:
+            self.error_message += "No RHR data found during baseline period!\n"
             self.error_message += "No RHR data found during baseline period!\n"
 
         self.__annotate_anomaly()
@@ -78,35 +80,44 @@ class Data():
         # Check VAE train dataset shape
         if self.train_dataset_vae.shape[0] == 0:
             self.error_message += "No sample in VAE train dataset!"
+            self.error_message += "No sample in VAE train dataset!"
 
         self.test_dataset_vae = self.__create_vae_dataset(self.test_data)
         # Check VAE test dataset shape
         if self.test_dataset_vae.shape[0] == 0:
+            self.error_message += "No sample in VAE test dataset!"
             self.error_message += "No sample in VAE test dataset!"
 
         self.merged_dataset_vae = self.__create_vae_dataset(self.merged_data)
         # Check VAE augmented train dataset shape
         if self.merged_dataset_vae.shape[0] == 0:
             self.error_message += "No sample in merged VAE dataset!"
+            self.error_message += "No sample in merged VAE dataset!"
 
         self.train_dataset_lstm = self.__create_lstm_dataset(self.train_data)
         # Check LSTM train dataset shape
         if self.train_dataset_lstm.shape[0] == 0:
+            self.error_message += "No sample in LSTM train dataset!"
             self.error_message += "No sample in LSTM train dataset!"
 
         self.test_dataset_lstm = self.__create_lstm_dataset(self.test_data)
         # Check VAE train dataset shape
         if self.test_dataset_lstm.shape[0] == 0:
             self.error_message += "No sample in LSTM test dataset!"
+            self.error_message += "No sample in LSTM test dataset!"
 
         self.merged_dataset_lstm = self.__create_lstm_dataset(self.merged_data)
         # Check merged lstm dataset shape
         if self.merged_dataset_lstm.shape[0] == 0:
             self.error_message += "No sample in merged lstm dataset!"
+            self.error_message += "No sample in merged lstm dataset!"
 
         if self.config['AUGMENT_DATA']:
             self.train_aug_dataset_vae = augment_dataset(
                 self.train_dataset_vae)
+            # Check train aug vae dataset shape
+            if self.train_aug_dataset_vae.shape[0] == 0:
+                self.error_message += "No sample in train aug VAE dataset!"
             # Check train aug vae dataset shape
             if self.train_aug_dataset_vae.shape[0] == 0:
                 self.error_message += "No sample in train aug VAE dataset!"
@@ -285,6 +296,9 @@ class DataTL():
                     'before_7': self.symptom_onset + timedelta(days=-7),
                     'before_10': self.symptom_onset + timedelta(days=-10),
                     'before_20': self.symptom_onset + timedelta(days=-20),
+                    'after_7': self.symptom_onset + timedelta(days=7),
+                    'after_14': self.symptom_onset + timedelta(days=14),
+                    'after_21': self.symptom_onset + timedelta(days=21)
                     'after_7': self.symptom_onset + timedelta(days=7),
                     'after_14': self.symptom_onset + timedelta(days=14),
                     'after_21': self.symptom_onset + timedelta(days=21)
