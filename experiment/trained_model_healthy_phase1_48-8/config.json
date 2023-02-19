@@ -1,0 +1,16 @@
+{
+    "EXP_NAME": "trained_model_healthy_phase1_48-8",
+    "EXP_PHASE": "phase1",
+    "EXP_GROUP": "healthy",
+    "AUGMENT": true,
+    "LEN_WIN": 48,
+    "N_WIN": 8,
+    "LATENT_DIM": 6,
+    "BATCH_SIZE": 64,
+    "VAL_SPLIT": 0.05,
+    "LEARNING_RATE": 0.0002,
+    "EPOCH": 1000,
+    "PATIENCE": 10,
+    "EXP_DIR": "e:\\Repositories\\PCovNet\\src\\..\\experiment\\trained_model_healthy_phase1_48-8",
+    "DATA_DIR": "e:\\Repositories\\PCovNet\\src\\..\\data\\raw\\phase1"
+}

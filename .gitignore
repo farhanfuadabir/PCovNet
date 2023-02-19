@@ -7,3 +7,4 @@ data/raw/phase2/*
 !data/raw/phase1/readme.txt
 !data/raw/phase2/readme.txt
 experiment/*
+!experiment/trained_model_healthy_phase1_48-8

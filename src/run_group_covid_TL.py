@@ -29,9 +29,9 @@ print('Found GPU at: {}'.format(device_name))
 
 #########################################################################
 
-tl_vae_ckpt_path = join(os.pardir, "experiment", "transfer_learning_48_8",
+tl_vae_ckpt_path = join(os.pardir, "experiment", "trained_model_healthy_phase1_48-8",
                         "vae_checkpoint", "ckpt")
-tl_lstm_ckpt_path = join(os.pardir, "experiment", "transfer_learning_48_8",
+tl_lstm_ckpt_path = join(os.pardir, "experiment", "trained_model_healthy_phase1_48-8",
                          "lstm_checkpoint", "ckpt")
 VAE_FINE_TUNE = False
 LSTM_FINE_TUNE = False
